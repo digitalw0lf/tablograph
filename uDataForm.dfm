@@ -25,7 +25,6 @@ object DataForm: TDataForm
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 440
     object SpeedButton2: TSpeedButton
       Left = 8
       Top = 8
@@ -132,7 +131,6 @@ object DataForm: TDataForm
     OnKeyDown = GridKeyDown
     OnMouseDblClickCell = GridMouseDblClickCell
     OnMouseUp = GridMouseUp
-    ExplicitLeft = -8
     ColWidths = (
       36
       64

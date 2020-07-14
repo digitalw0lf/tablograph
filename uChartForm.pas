@@ -7,26 +7,27 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, LPControl, SLControlCollection, LPControlDrawLayers, SLScope,
-  ExtCtrls, StdCtrls, uUtil, Buttons, Math, SLDataDisplay, Mitov.VCLTypes,
-  SLDataChart, SLBasicDataDisplay;
+  Dialogs,
+  ExtCtrls, StdCtrls, uUtil, Buttons, Math, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart;
 
 type
   TChartForm = class(TForm)
-    Chart: TSLScope;
     Panel1: TPanel;
     Label1: TLabel;
     ComboBox1: TComboBox;
     SpeedButton1: TSpeedButton;
     CBXAxisDateTime: TCheckBox;
+    Chart: TChart;
+    Series1: TLineSeries;
     procedure SpeedButton1Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure ChartCustomMouseHitLabel(Sender: TObject; XValue, YValue: Real;
-      var AxisLabel: string);
-    procedure ChartDataToolTip(Sender: TObject; MousePoint: TPoint;
-      DataPoint: TSLRealPoint; var Text: string);
+//    procedure AChartCustomMouseHitLabel(Sender: TObject; XValue, YValue: Real;
+//      var AxisLabel: string);
+//    procedure AChartDataToolTip(Sender: TObject; MousePoint: TPoint;
+//      DataPoint: TSLRealPoint; var Text: string);
     procedure ChartXAxisCustomLabel(Sender: TObject; SampleValue: Real;
       var AxisLabel: string);
   private
@@ -51,21 +52,21 @@ uses uDataForm, uMainForm, uScriptForm;
 
 { TChartForm }
 
-procedure TChartForm.ChartCustomMouseHitLabel(Sender: TObject; XValue,
-  YValue: Real; var AxisLabel: string);
-begin
-//  ScriptForm.AddLog('CustomMouseHitLabel: '+AxisLabel);
-  if CBXAxisDateTime.Checked then
-    AxisLabel:=DateTime2Str(XValue,'dd.mm.yy hh:nn:ss.zzz')+' : '+R2S(YValue);
-end;
-
-procedure TChartForm.ChartDataToolTip(Sender: TObject; MousePoint: TPoint;
-  DataPoint: TSLRealPoint; var Text: string);
-begin
-//  ScriptForm.AddLog('DataToolTip: '+Text);
-  if CBXAxisDateTime.Checked then
-    Text:=DateTime2Str(DataPoint.X,'hh:nn:ss.zzz');
-end;
+//procedure TChartForm.AChartCustomMouseHitLabel(Sender: TObject; XValue,
+//  YValue: Real; var AxisLabel: string);
+//begin
+////  ScriptForm.AddLog('CustomMouseHitLabel: '+AxisLabel);
+//  if CBXAxisDateTime.Checked then
+//    AxisLabel:=DateTime2Str(XValue,'dd.mm.yy hh:nn:ss.zzz')+' : '+R2S(YValue);
+//end;
+//
+//procedure TChartForm.AChartDataToolTip(Sender: TObject; MousePoint: TPoint;
+//  DataPoint: TSLRealPoint; var Text: string);
+//begin
+////  ScriptForm.AddLog('DataToolTip: '+Text);
+//  if CBXAxisDateTime.Checked then
+//    Text:=DateTime2Str(DataPoint.X,'hh:nn:ss.zzz');
+//end;
 
 procedure TChartForm.ChartXAxisCustomLabel(Sender: TObject; SampleValue: Real;
   var AxisLabel: string);
@@ -128,24 +129,27 @@ var
   i:Integer;
   cx,cy,r:Integer;
   x,y:Extended;
+  Ser: TLineSeries;
   s:string;
 begin
   GrList:=SplitStrToArr(ComboBox1.Text,[' '],True);
 
-  while Chart.Channels.Count<Length(GrList) do
-    with Chart.Channels.Add() do
-    begin
-      Width:=2;
-      Color:=ContrastColors[Index mod Length(ContrastColors)];
-    end;
-  while Chart.Channels.Count>Length(GrList) do
+  while Chart.SeriesCount<Length(GrList) do
   begin
-    Chart.Channels.Delete(Chart.Channels.Count-1);
+    Ser := TLineSeries.Create(Self);
+    Ser.LineHeight :=2;
+    Ser.Color := ContrastColors[Chart.SeriesCount mod Length(ContrastColors)];
+    Chart.AddSeries(Ser);
+  end;
+  while Chart.SeriesCount>Length(GrList) do
+  begin
+    Chart.RemoveSeries(Chart.SeriesCount-1);
   end;
 
   for i:=0 to Length(GrList)-1 do
   begin
-    Chart.Channels[i].Data.Clear();
+    Ser := Chart.Series[i] as TLineSeries;
+    Ser.Clear();
     a:=SplitStrToArr(GrList[i],['/']);
     if Length(a)=0 then Continue;
     cy:=StrToInt(a[0]);
@@ -154,8 +158,8 @@ begin
     else
       cx:=0;
     s:=(DataForm.Grid.Cell[cy,0] as TCalcCell).Caption;
-    Chart.Channels[i].Name:=GrList[i]+' '+s;
-    with Chart.Channels[i] do
+    Ser.Title:=GrList[i]+' '+s;
+//    with Chart.Channels[i] do
 //    if cx=0 then
 //    begin
 //      ChannelMode:=cmLine;
@@ -176,7 +180,7 @@ begin
         x:=DataForm.GetV(r,cx);
       y:=DataForm.GetV(r,cy);
       if (not IsNaN(y)) and (not IsNaN(x)) then
-        Chart.Channels[i].Data.AddXYPoint(x,y);
+        Ser.AddXY(x,y);
     end;
   end;
 end;

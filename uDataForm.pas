@@ -9,7 +9,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, ComCtrls, Buttons, RegExpr, uUtil, KControls,
   KGrids, Clipbrd, Math, OleCtrls, MSScriptControl_TLB, uLargeStr, Menus,
-  uMainForm, uFmtTextDraw, ColoredPanel;
+  uMainForm, uFmtTextDraw, ColoredPanel, System.Types;
 
 type
   TCalcCell = class (TKGridTextCell)
@@ -154,8 +154,8 @@ begin
 end;
 
 procedure TDataForm.ClearAllData;
-var
-  I, J: Integer;
+//var
+//  I, J: Integer;
 begin
   BeginLargeChange();
   try
@@ -455,7 +455,7 @@ end;
 procedure TDataForm.LoadData(const Buf: AnsiString);
 var
   a1,a2:tStringArray;
-  p:PAnsiChar;
+//  p:PAnsiChar;
   c,r:Integer;
   Cell:TCalcCell;
   s:AnsiString;
@@ -708,7 +708,7 @@ procedure TDataForm.TrimEmptyRows(LeaveEmpty:Integer=0);
 var
   c,r,LastUsedRow:Integer;
 begin
-  r:=Grid.RowCount-1;
+//  r:=Grid.RowCount-1;
   LastUsedRow:=0;
 //  while r>10 do
   for r:=Grid.RowCount-1 downto 1 do

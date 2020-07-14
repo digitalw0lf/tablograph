@@ -46,7 +46,7 @@ type
     function log(const v: OleVariant): OleVariant;
     destructor Destroy(); override;
     constructor Create();
-  published
+//  published
 
   end;
 
@@ -186,7 +186,6 @@ end;
 
 procedure TScriptForm.LoadData(const Buf: AnsiString);
 var
-  s:AnsiString;
   i:Integer;
 begin
   i:=Pos(TextDiv,Buf);
@@ -329,12 +328,13 @@ function TScriptEnv.Invoke(DispID: Integer; const IID: TGUID; LocaleID: Integer;
   Flags: Word; var Params; VarResult, ExcepInfo, ArgErr: Pointer): HResult;
 var
   dps:TDispParams absolute Params;
-  s:string;
-  i,n,r,c:Integer;
-  Value:AnsiString;
+//  s:string;
+  i,n{,r,c}:Integer;
+//  Value:AnsiString;
   Func:tScriptEntityFunc;
   Args:array of Variant;
 begin
+  Result:=DISP_E_UNKNOWNNAME;
 //  s:=Format('Invoke: DispID: %d Flags: %x Args: %d NamedArgs: %d (',[DispID, Flags, dps.cArgs, dps.cNamedArgs]);
 //  for i:=0 to dps.cArgs-1 do
 //    s:=s+' '+VarToStr(Variant(dps.rgvarg[i]));

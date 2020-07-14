@@ -76,6 +76,10 @@ object ScriptForm: TScriptForm
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Run'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object MemoRunScript: TRichEdit
         Left = 0
         Top = 0
@@ -124,8 +128,8 @@ object ScriptForm: TScriptForm
   object ScriptControl1: TScriptControl
     Left = 48
     Top = 104
-    Width = 32
-    Height = 32
+    Width = 0
+    Height = 0
     ControlData = {
       2143341208000000ED030000ED030000D2F1594E010000002800000010270000
       01000A004A00610076006100530063007200690070007400}

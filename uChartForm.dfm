@@ -16,60 +16,13 @@ object ChartForm: TChartForm
   Visible = True
   PixelsPerInch = 96
   TextHeight = 13
-  object Chart: TSLScope
-    Left = 0
-    Top = 33
-    Width = 699
-    Height = 547
-    Align = alClient
-    Color = clWhite
-    Zooming.SelectionColor = clBlue
-    Zooming.HoldOnZoom = False
-    Zooming.Mode = zmXAxis
-    NavigateMode = nmPan
-    Title.Font.Color = clBlack
-    ToolBar.ButtonColor = clSilver
-    Trails.Font.Color = clBlack
-    TabOrder = 0
-    OnDataToolTip = ChartDataToolTip
-    Highlighting.MouseHitPoint.PointLabel.Font.Color = clBlack
-    YAxis.Color = clBlack
-    YAxis.Font.Color = clBlack
-    YAxis.ToolBar.ButtonColor = clSilver
-    YAxis.AxisLabel.Font.Color = clBlack
-    YAxis.DataView.Lines.Pen.Color = clGray
-    YAxis.DataView.ZeroLine.Pen.Color = clGray
-    XAxis.Color = clBlack
-    XAxis.Font.Color = clBlack
-    XAxis.ToolBar.ButtonColor = clSilver
-    XAxis.AxisLabel.Font.Color = clBlack
-    XAxis.OnCustomLabel = ChartXAxisCustomLabel
-    XAxis.DataView.Lines.Pen.Color = clGray
-    XAxis.DataView.ZeroLine.Pen.Color = clGray
-    Legend.Font.Color = clBlack
-    Legend.MarkerGroups.Caption.Font.Style = []
-    Legend.Cursors.Caption.Font.Style = []
-    Legend.CursorLinks.Caption.Font.Style = []
-    Legend.Zones.Caption.Font.Style = []
-    Legend.Ellipses.Caption.Font.Style = []
-    Legend.Labels.Caption.Font.Style = []
-    Legend.Channels.Caption.Font.Color = clBlack
-    Legend.Channels.Caption.Font.Style = []
-    Legend.ChannelLinks.Caption.Font.Style = []
-    DataView.Border.Pen.Color = clGray
-    Channels = <
-      item
-        Name = 'Channel0'
-      end>
-    OnCustomMouseHitLabel = ChartCustomMouseHitLabel
-  end
   object Panel1: TPanel
     Left = 0
     Top = 0
     Width = 699
     Height = 33
     Align = alTop
-    TabOrder = 1
+    TabOrder = 0
     object Label1: TLabel
       Left = 8
       Top = 10
@@ -101,6 +54,35 @@ object ChartForm: TChartForm
       Height = 17
       Caption = 'X - DateTime'
       TabOrder = 1
+    end
+  end
+  object Chart: TChart
+    Left = 0
+    Top = 33
+    Width = 699
+    Height = 547
+    Legend.CheckBoxes = True
+    Legend.LegendStyle = lsSeries
+    Title.Text.Strings = (
+      'TChart')
+    Title.Visible = False
+    Panning.MouseWheel = pmwNone
+    View3D = False
+    Zoom.MouseWheel = pmwNormal
+    Align = alClient
+    Color = clWhite
+    TabOrder = 1
+    ExplicitTop = 32
+    DefaultCanvas = 'TGDIPlusCanvas'
+    ColorPaletteIndex = 13
+    object Series1: TLineSeries
+      Brush.BackColor = clDefault
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Y'
+      YValues.Order = loNone
     end
   end
 end
